@@ -8,8 +8,7 @@ import java.io.IOException;
 public class BlockData {
 	public int from;
 	public int to;
-	public boolean head;
-	public boolean tail;
+
 	public int size;
 	public int blockNum;
 	public int[] arrayData;
@@ -29,8 +28,7 @@ public class BlockData {
 			ps.parse(tmp);
 			this.from = ps.from;
 			this.to = ps.to;
-			this.head = ps.head;
-			this.tail = ps.tail;
+
 			this.size = ps.size;
 			this.sign = ps.sign;
 			//print some log

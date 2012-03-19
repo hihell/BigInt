@@ -5,23 +5,27 @@ import java.util.ArrayList;
 public class BIPlus {
 	BigInt biResult;
 	
+	Integer carryBit = 0;
+	int itmp = 0;
+	Integer bit = 0;
+	int globalIndex = 0;
+	ArrayList<String> list = new ArrayList<String>();
+	
+	int isLarger;
+	BigInt biLarger;
+	BigInt biSmaller;
+	int operator = 1;
+	StringBuilder paras;
+	int resultSign = 1;
+	int lastBlockEndBoundary = -1;
+	
 	public BIPlus(BigInt Rst){
 		this.biResult = Rst;
 	}
 	
 	public void plus(BigInt b1, BigInt b2){
-		Integer carryBit = 0;
-		int itmp = 0;
-		Integer bit = 0;
-		int globalIndex = 0;
-		ArrayList<String> list = new ArrayList<String>();
-		
-		int isLarger;
-		BigInt biLarger = b1;
-		BigInt biSmaller = b2;
-		int operator = 1;
-		StringBuilder paras;
-		int resultSign = 1;
+		biLarger = b1;
+		biSmaller = b2;
 		
 		if(b1.crtBlockData.sign != b2.crtBlockData.sign){//necessary to set the larger and smaller	
 			isLarger = compareAbsValue(b1,b2);
@@ -58,12 +62,10 @@ public class BIPlus {
 			list.add(bit.toString());
 			
 			if(list.size() == biResult.crtBlockData.size){
-				paras = new StringBuilder();
-				paras.append(globalIndex);
-				paras.append(",");
-				paras.append(resultSign);
-				biResult.blockWriter(paras.toString(), list);
+				String p = parasBuilder(globalIndex, resultSign);
+				biResult.blockWriter(p, list);
 				list.clear();
+				lastBlockEndBoundary = globalIndex;
 			}
 		}
 			
@@ -74,11 +76,8 @@ public class BIPlus {
 		}
 		
 	 	if(list.size() != 0){
-	 		paras = new StringBuilder();
-	 		paras.append(globalIndex);
-	 		paras.append(",");
-	 		paras.append(resultSign);
-			biResult.blockWriter(paras.toString(), list);
+	 		String p = parasBuilder(globalIndex, resultSign);
+			biResult.blockWriter(p, list);
 		}
 	}
 	
@@ -99,6 +98,28 @@ public class BIPlus {
 			}
 			return 0;
 		}
+	}
+	
+	public String parasBuilder(int globalIndex, int sign){
+		Integer from;
+		Integer to;
+		Integer size;
+		
+		
+		StringBuilder sb = new StringBuilder();
+		to = globalIndex;
+		size = to - lastBlockEndBoundary;
+		from = to - size + 1;
+		
+		sb.append(from);
+		sb.append(",");
+		sb.append(to);
+		sb.append(",");
+		sb.append(size);
+		sb.append(",");
+		sb.append(sign);
+
+		return sb.toString();
 	}
 }
 	
