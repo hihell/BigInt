@@ -17,6 +17,7 @@ public class BigInt {
 	public int fixedBlockSize;
 	public ArrayList<String> arrayList;
 	
+	
 	public BigInt(String path, int fixedBlockSize){//create big int by read file
 		this.path = path;
 		this.fixedBlockSize = fixedBlockSize;
@@ -48,7 +49,7 @@ public class BigInt {
 			return a;
 //				System.out.println("local index:"+localIndex+" array lenth:"+crtBlockData.arrayData.length);
 		} else {//out of boundary
-			System.out.println("!! size:"+this.totalSize+" globalIndex:"+this.totalSize);
+//			System.out.println("!! size:"+this.totalSize+" globalIndex:"+this.totalSize);
 			return 0;
 		}
 	}
@@ -72,7 +73,7 @@ public class BigInt {
 			ParaParser ps = new ParaParser();
 			ps.parse(stmp);
 			int to = ps.to;
-			System.out.println("from:"+ps.from+" to:"+ps.to);
+//			System.out.println("from:"+ps.from+" to:"+ps.to);
 			return to;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -83,10 +84,13 @@ public class BigInt {
 	}
 	
 	
-	public void blockWriter(ArrayList<String> data){
+	public void blockWriter(String paras, ArrayList<String> data){
 		try {
+			System.out.println("paras are:"+paras);
 			FileWriter fstream = new FileWriter(this.path+"/"+crtBlockData.blockNum);
 			BufferedWriter br = new BufferedWriter(fstream);
+			br.write(paras);
+			br.newLine();
 			br.write(data.toString());
 			br.close();
 			crtBlockData.blockNum++;

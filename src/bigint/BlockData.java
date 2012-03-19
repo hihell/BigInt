@@ -13,8 +13,9 @@ public class BlockData {
 	public int size;
 	public int blockNum;
 	public int[] arrayData;
+	public int sign;
 	public String path;
-	public BufferedReader br;
+	public BufferedReader br; 
 	
 	public BlockData(String path, int blockNum){
 		try {
@@ -31,12 +32,10 @@ public class BlockData {
 			this.head = ps.head;
 			this.tail = ps.tail;
 			this.size = ps.size;
+			this.sign = ps.sign;
 			//print some log
-			System.out.println("~~~~~~~~~");
 			System.out.println("|block data initialized, Num:"+this.blockNum);
 			System.out.println("|path:"+path);
-//			System.out.println("from:"+this.from+" to:"+this.to+" head:"+this.head+" tail:"+this.tail+" size:"+this.size);
-			System.out.println("~~~~~~~~~");
 			//change data from string to int
 			processData();
 			//close reader flow

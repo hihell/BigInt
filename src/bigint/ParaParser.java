@@ -6,7 +6,7 @@ public class ParaParser {
 	public boolean head;
 	public boolean tail;
 	public Integer size;
-
+	public Integer sign;
 	
 	public void parse(String line){
 		String []tmp = line.split(",");
@@ -15,6 +15,6 @@ public class ParaParser {
 		head = Integer.parseInt(tmp[2]) == 1 ? true : false;
 		tail = Integer.parseInt(tmp[3]) == 1 ? true : false;
 		size = Integer.parseInt(tmp[4]);
+		sign = Integer.parseInt(tmp[5]);
 	}
-		
 }
