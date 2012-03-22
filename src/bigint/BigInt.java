@@ -15,25 +15,38 @@ public class BigInt {
 	public String path;
 	public int totalSize;
 	public int fixedBlockSize;
-	public ArrayList<String> arrayList;
 	
 	
-	public BigInt(String path, int fixedBlockSize){//create big int by read file
+	public BigInt(String path, int fixedBlockSize){//create big int by reading file
 		this.path = path;
 		this.fixedBlockSize = fixedBlockSize;
 		File dir = new File(path);
-		String[] fileList = dir.list();
-		System.out.println("path:"+this.path+" contains:"+fileList.length);
-		if(fileList.length > 1){
-			crtBlockData = new BlockData(path, 1);//constructor create the 1st block by reading file, so the number is 1			
-			String lastBlock = fileList[fileList.length - 1];
-			this.totalSize = this.getBlockEndBoundry(lastBlock) + 1;
+		String[] fileNames = dir.list();
+		ArrayList<String>  fileNameList = new ArrayList<String>();
+		
+		for(int i=0; i<dir.list().length; i++){
+			if(fileNames[i] != ".DS_Store" ){
+				fileNameList.add(fileNames[i]);	
+			} else {
+				System.out.println("haha, ds store found!");
+			}
+		}
+		
+		
+		if(fileNameList.contains("1")){
+			crtBlockData = new BlockData(path, 1);
+			
+			String lastBlockNum = fileNameList.get(fileNameList.size() - 1);
+			
+			this.totalSize = this.getBlockEndBoundry(lastBlockNum) + 1;
 		} else {
+			System.out.print("file not found");
 			crtBlockData = new BlockData();
 			crtBlockData.size = fixedBlockSize;
 			crtBlockData.blockNum = 1;//set 1st file number, create and fill it afterward
 			this.path = path;
 		}
+
 	}
 
 	
@@ -41,11 +54,18 @@ public class BigInt {
 		if(globalIndex < this.totalSize){
 			
 			if(getBlockNum(globalIndex) != crtBlockData.blockNum){//change block				
-				crtBlockData = new BlockData(path, getBlockNum(globalIndex));			
+				crtBlockData = new BlockData(path, getBlockNum(globalIndex));
 			}
 			
 			int localIndex = getLocalIndex(globalIndex);
-			int a = crtBlockData.arrayData[localIndex];				
+			int a;
+//			try{
+				a = crtBlockData.arrayData[localIndex];				
+//			} catch (java.lang.ArrayIndexOutOfBoundsException e){
+//				System.out.println("OOB, the path is:"+this.path);
+//				a = 0;
+//			}
+				
 			return a;
 //				System.out.println("local index:"+localIndex+" array lenth:"+crtBlockData.arrayData.length);
 		} else {//out of boundary
@@ -91,7 +111,11 @@ public class BigInt {
 			BufferedWriter br = new BufferedWriter(fstream);
 			br.write(paras);
 			br.newLine();
-			br.write(data.toString());
+			StringBuilder sb = new StringBuilder();
+			for(int i=0; i<data.size(); i++){
+				sb.append(data.get(i));
+			}
+			br.write(sb.toString());
 			br.close();
 			crtBlockData.blockNum++;
 		} catch (IOException e) {
