@@ -58,18 +58,10 @@ public class BigInt {
 			}
 			
 			int localIndex = getLocalIndex(globalIndex);
-			int a;
-//			try{
-				a = crtBlockData.arrayData[localIndex];				
-//			} catch (java.lang.ArrayIndexOutOfBoundsException e){
-//				System.out.println("OOB, the path is:"+this.path);
-//				a = 0;
-//			}
+			int a = crtBlockData.arrayData[localIndex];				
 				
 			return a;
-//				System.out.println("local index:"+localIndex+" array lenth:"+crtBlockData.arrayData.length);
 		} else {//out of boundary
-//			System.out.println("!! size:"+this.totalSize+" globalIndex:"+this.totalSize);
 			return 0;
 		}
 	}
@@ -122,35 +114,4 @@ public class BigInt {
 			e.printStackTrace();	
 		}
 	}
-	
-//	public void globalWriter(Integer bit, int globalIndex){
-//		int blockNum = this.getBlockNum(globalIndex);
-//		int localIndex = this.getLocalIndex(globalIndex);
-//		
-//		File dir = new File(path);
-//		String[] fileList = dir.list();
-//		
-//		if(fileList.length - 1 < blockNum){//this block is not exist
-//			
-//			try {
-//				FileWriter fstream = new FileWriter(this.path+"/"+blockNum);
-//				BufferedWriter br = new BufferedWriter(fstream);
-//				br.write(bit.toString());
-//				br.close();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		
-//		} else {
-//			//block exist
-//			try {
-//				FileWriter fstream = new FileWriter(this.path+"/tmp"+blockNum);
-//				BufferedWriter br = new BufferedWriter(fstream);
-//				
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//	}
-
 }

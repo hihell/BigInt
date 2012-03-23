@@ -19,11 +19,7 @@ public class BigIntFileUtil{
 			
 			for(int i=0; i<f1list.length ;i++){
 				InputStream in = new FileInputStream(f1list[i]);
-				
-				  //For Append the file.
-				  //OutputStream out = new FileOutputStream(f2,true);
-			
-				  //For Overwrite the file.
+
 				String path = "/"+f1list[i].getName();
 				OutputStream out = new FileOutputStream(f2+path);
 			

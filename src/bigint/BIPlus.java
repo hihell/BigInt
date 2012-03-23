@@ -34,6 +34,8 @@ public class BIPlus {
 			isLarger = compareAbsValue(b1,b2);
 			operator = -1;
 			if(isLarger == 0){
+				System.out.print("the result is 0");
+				System.exit(0);
 				//finished, the result is 0
 			} else if (isLarger == 1){
 				biLarger = b1;
@@ -70,21 +72,21 @@ public class BIPlus {
 				biResult.blockWriter(p, list);
 				list.clear();
 				lastBlockEndBoundary = globalIndex;
+			} 
+			if(globalIndex + 1 == biLarger.totalSize) {
+				
+				if(carryBit!=0){
+					list.add(carryBit.toString());
+					globalIndex++;
+				}
+				if(list.size()!=0){
+					pb = new ParaBuilder();
+					String p = pb.buildPara(globalIndex, lastBlockEndBoundary, resultSign);
+					biResult.blockWriter(p, list);
+				}
 			}
 		}
 		
-		if(carryBit != 0){
-			list.add(carryBit.toString());
-			carryBit = 0;
-			globalIndex++;
-		}
-		
-	 	if(list.size() != 0){
-	 		globalIndex--;
-	 		pb = new ParaBuilder();
-	 		String p = pb.buildPara(globalIndex, lastBlockEndBoundary, resultSign);
-			biResult.blockWriter(p, list);
-		}
 	}
 	
 	public void plus(BigInt b1, BigInt b2, int offset){//only process same sign value
@@ -118,20 +120,18 @@ public class BIPlus {
 				biResult.blockWriter(p, list);
 				list.clear();
 				lastBlockEndBoundary = globalIndex;
+			} 
+			if( globalIndex + 1 == Math.max(b1.totalSize, b2.totalSize+offset)){
+				if(carryBit != 0){
+					list.add(carryBit.toString());
+					globalIndex++;
+				}
+				if(list.size() != 0){
+					pb = new ParaBuilder();
+					String p = pb.buildPara(globalIndex, lastBlockEndBoundary, resultSign);
+					biResult.blockWriter(p, list);
+				}
 			}
-		}
-//		TODO carryBit add issue
-		if(carryBit != 0){
-			list.add(carryBit.toString());
-			carryBit = 0;
-			globalIndex++;
-		}
-		
-	 	if(list.size() != 0){
-	 		globalIndex--;
-	 		pb = new ParaBuilder();
-	 		String p = pb.buildPara(globalIndex, lastBlockEndBoundary, resultSign);
-			biResult.blockWriter(p, list);
 		}
 	}
 	

@@ -67,18 +67,20 @@ public class BIMulti {
 	
 	
 	public void multiply(BigInt b1, BigInt b2){
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list;
 		Integer tmp = 0;
 		Integer carryBit = 0;
 		Integer bit = 0;
 		resultSign = b1.crtBlockData.sign * b2.crtBlockData.sign;
 		
 		
-		for(; globalIndexB1 < b1.totalSize; globalIndexB1++){
+		for(globalIndexB1 = 0; globalIndexB1 < b1.totalSize; globalIndexB1++){
 			Integer b1Factor = b1.get(globalIndexB1);
 			BigInt bi = getTableRow(b1Factor);
 			
+			
 			if(bi == null){//calculate
+				list = new ArrayList<String>();
 				bi = new BigInt(tablePath+"/M"+b1Factor, biResult.fixedBlockSize);
 
 				for(globalIndexB2 = 0; globalIndexB2 < b2.totalSize; globalIndexB2++){
@@ -101,33 +103,27 @@ public class BIMulti {
 						this.lastBlockEndBoundary = globalIndexB2;
 					}
 					
-				}//end for
-				
-				if(carryBit != 0){
-					list.add(carryBit.toString());
-					globalIndexB2++;
-					carryBit = 0;
-				}
-				
-				if(list.size() != 0){
-					globalIndexB2--;
-					pb = new ParaBuilder();
-					String paras = pb.buildPara(globalIndexB2, lastBlockEndBoundary, resultSign);
-					bi.blockWriter(paras, list);
-					list.clear();
-					this.lastBlockEndBoundary = globalIndexB2;
+					if (globalIndexB2 + 1 == b2.totalSize) {
+						if(carryBit != 0){
+							list.add(carryBit.toString());
+							globalIndexB2++;
+						}
+						if(list.size() != 0){
+							pb = new ParaBuilder();
+							String paras = pb.buildPara(globalIndexB2, lastBlockEndBoundary, resultSign);
+							bi.blockWriter(paras, list);
+						}
+					}
 				}
 				//shit! bi files modified have to update the object
 				bi = new BigInt(tablePath+"/M"+b1Factor, biResult.fixedBlockSize);
 			}//the missing line in table was created
 			
 			if(globalIndexB1 == 0){//initial accumulating result
-				//TODO copy bi(in the table) to postTmpAccRst path
 				fileOpt.copyFiles(bi.path, postTmpAccRst.path);
 				
 				//shit! files added, have to update the object
-				postTmpAccRst = new BigInt(this.tempAccumulatingResultPath+"/2", biResult.fixedBlockSize);
-				
+				postTmpAccRst = new BigInt(this.tempAccumulatingResultPath+"/2", biResult.fixedBlockSize);				
 			} else {
 				//pre + bi -> post, then pre and post will exchange
 				pluser = new BIPlus(postTmpAccRst);
@@ -146,12 +142,9 @@ public class BIMulti {
 	
 	public void swapPrePost(){
 		String tmpPath = preTmpAccRst.path;
-		//TODO pre remove everything 
 		fileOpt.deleteFiles(preTmpAccRst.path);
 		preTmpAccRst = postTmpAccRst;
 		postTmpAccRst = new BigInt(tmpPath, biResult.fixedBlockSize);
 		
 	}
-	
-	
 }

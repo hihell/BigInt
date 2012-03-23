@@ -3,6 +3,7 @@ package bigint;
 import java.io.File;
 
 import util.BigIntFileUtil;
+import util.FolderCleaner;
 
 
 public class mainClass {
@@ -20,8 +21,8 @@ public class mainClass {
 		
 		BigInt rst = new BigInt(resultPath, 4);
 	
-		
-		
+		FolderCleaner fc = new FolderCleaner("/Users/jiusi/Documents/workspace/testfield");
+		fc.preCalClean();
 //		
 //		BIPlus operator = new BIPlus(rst);
 //		operator.plus(b1, b2);

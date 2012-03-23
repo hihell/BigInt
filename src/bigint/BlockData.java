@@ -64,7 +64,7 @@ public class BlockData {
 				try{
 					this.arrayData[i] = Character.getNumericValue(ctmp[i]);
 				} catch (java.lang.ArrayIndexOutOfBoundsException e){
-					System.out.println("SB! i:"+i+"the array lenth is:"+arrayData.length+" path is:"+this.path+"/"+this.blockNum);
+					System.out.println("SB! i:"+i+"the array length is:"+arrayData.length+" path is:"+this.path+"/"+this.blockNum);
 				}
 			}
 		} catch (IOException e) {

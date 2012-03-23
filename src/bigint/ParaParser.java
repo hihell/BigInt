@@ -14,8 +14,6 @@ public class ParaParser {
 		to = Integer.parseInt(tmp[1]);
 		size = Integer.parseInt(tmp[2]);
 		sign = Integer.parseInt(tmp[3]);
-//		if(tmp.length == 5){
-//			this.totalBlocks = Integer.parseInt(tmp[4]);
-//		}
+
 	}
 }
