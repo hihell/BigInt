@@ -2,6 +2,8 @@ package bigint;
 
 import java.util.ArrayList;
 
+import util.ModifyBlock;
+
 public class BIPlus {
 	BigInt biResult;
 	
@@ -135,16 +137,101 @@ public class BIPlus {
 		}
 	}
 	
+	public BigInt plusForDiv(BigInt b1, BigInt b2, int offset){//in here b1 must larger than b2, so the resultSign is 1 (positive)
+		biLarger = b1;
+		biSmaller = b2;
+		resultSign = 1;
+		Integer v1,v2;
+//		Integer firstBlockSize = biResult.fixedBlockSize;
+//		boolean startWrite = false;
+//		boolean firstBlockCreated = false;
+//		boolean needDeleteZeros = false;
+		
+		for(globalIndex = 0; globalIndex < biLarger.totalSize; globalIndex++){
+			
+			v1 = biLarger.get(globalIndex);
+			
+			int v2Index = globalIndex - offset;
+			if(v2Index >= 0){
+				v2 = biSmaller.get(v2Index);
+			} else {
+				v2 = 0;
+			}
+			
+			itmp = v1 - v2 + carryBit;
+			if(itmp > 9){//TODO this branch can be deleted. because is a sub operation, the carry will always less than 1
+				bit = itmp % 10;
+				carryBit = (itmp - bit) / 10;
+			} else if(itmp < 10 && itmp > -1){
+				bit = itmp;
+				carryBit =  0;
+			} else {
+				bit = 10 + itmp; 
+				carryBit = -1;
+			}
+			list.add(bit.toString());
+			
+			
+//			if(!startWrite && bit !=0){
+//				startWrite = true;
+//				firstBlockSize = (globalIndex + 1) % biResult.fixedBlockSize;						
+//			}
+//			
+//			if(startWrite){
+//				list.add(bit.toString());
+//			}
+//			
+			
+//			if(!firstBlockCreated && list.size() == firstBlockSize){//create the first block
+//				pb = new ParaBuilder();
+//				String p = pb.buildPara(globalIndex, globalIndex-list.size(), resultSign);
+//				biResult.blockWriter(p, list);
+//				list.clear();
+//				
+//				firstBlockCreated = true;
+//			}
+//			
+
+			//TODO if list reach the last one, check if zero, if it is, use modify block to delete all zeros
+			
+			
+			if(list.size() == biResult.crtBlockData.size){
+				pb = new ParaBuilder();
+				String p = pb.buildPara(globalIndex, globalIndex-list.size(), resultSign);
+				biResult.blockWriter(p, list);
+				list.clear();
+			} 
+			
+			if(globalIndex + 1 == biLarger.totalSize){
+				if(list.size() != 0){
+					pb = new ParaBuilder();
+					String p = pb.buildPara(globalIndex, globalIndex-list.size(), resultSign);
+					biResult.blockWriter(p, list);
+				}
+				biResult = new BigInt(biResult.path, biResult.fixedBlockSize);
+				
+				if(bit == 0){// if the last bit is zero
+					ModifyBlock modifier = new ModifyBlock();
+					biResult = modifier.deleteZeros(biResult);
+				}
+			}
+		}//end for
+		return biResult;
+	}
+	
+	
+	
+	
 	public int compareAbsValue(BigInt b1, BigInt b2){
 		if(b1.totalSize > b2.totalSize){
 			return 1;
 		} else if(b2.totalSize > b1.totalSize){
 			return -1;
 		} else {
-			for(int i=0; i < b1.totalSize; i++){
+			for(int i = b1.totalSize - 1; i >= 0; i--){
 				if(b1.get(i) > b2.get(i)){
 					return 1;
-				} else if(b2.get(i) < b1.get(i)){
+				} else if(b2.get(i) > b1.get(i)){
 					return -1;
 				}
 			}

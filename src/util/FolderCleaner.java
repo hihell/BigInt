@@ -7,6 +7,7 @@ public class FolderCleaner {
 	static String result = "RST";
 	static String table  = "TABLE";
 	static String tempAccumulatingResult = "TempAccumulation";
+	static String tempDec = "TempDecrease";
 	
 	BigIntFileUtil fu;
 	
@@ -20,13 +21,16 @@ public class FolderCleaner {
 		fu.deleteFiles(this.testFieldPath+"/"+this.result);
 		
 		//delete table
-		for(int i = 2; i < 10; i++){
+		for(int i = 1; i < 10; i++){
 			fu.deleteFiles(this.testFieldPath+"/"+this.table+"/M"+i);
 		}
 		
 		//delete temp accumulating files
 		fu.deleteFiles(testFieldPath+"/"+this.tempAccumulatingResult+"/1");
 		fu.deleteFiles(this.testFieldPath+"/"+this.tempAccumulatingResult+"/2");
+		
+		fu.deleteFiles(testFieldPath+"/"+this.tempDec+"/1");
+		fu.deleteFiles(testFieldPath+"/"+this.tempDec+"/2");
 		
 	}
 	

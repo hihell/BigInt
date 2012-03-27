@@ -26,6 +26,17 @@ public class ParaBuilder{
 		return sb.toString();
 	}
 	
-	
+	public String buildPara(int from, int to, int size, int sign){
+		StringBuilder sb = new StringBuilder();
+		sb.append(from);
+		sb.append(",");
+		sb.append(to);
+		sb.append(",");
+		sb.append(size);
+		sb.append(",");
+		sb.append(sign);
+		
+		return sb.toString();
+	}
 	
 }

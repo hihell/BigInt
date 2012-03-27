@@ -1,9 +1,12 @@
 package bigint;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class BlockData {
 	public int from;
@@ -40,10 +43,8 @@ public class BlockData {
 			br.close();
 			
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	
@@ -71,5 +72,23 @@ public class BlockData {
 			e.printStackTrace();
 			System.out.println("shabile");
 		}	
+	}
+	
+	public void singleBlockWriter(String paras, ArrayList<String> data, int blockNum){
+		try {
+//			System.out.println("paras are:"+paras);
+			FileWriter fstream = new FileWriter(this.path+"/"+blockNum);
+			BufferedWriter br = new BufferedWriter(fstream);
+			br.write(paras);
+			br.newLine();
+			StringBuilder sb = new StringBuilder();
+			for(int i=0; i<data.size(); i++){
+				sb.append(data.get(i));
+			}
+			br.write(sb.toString());
+			br.close();
+		} catch (IOException e) {
+			e.printStackTrace();	
+		}
 	}
 }

@@ -40,7 +40,7 @@ public class BigInt {
 			
 			this.totalSize = this.getBlockEndBoundry(lastBlockNum) + 1;
 		} else {
-			System.out.print("file not found");
+			System.out.println("create a empty big int, path:"+path);
 			crtBlockData = new BlockData();
 			crtBlockData.size = fixedBlockSize;
 			crtBlockData.blockNum = 1;//set 1st file number, create and fill it afterward
@@ -98,7 +98,7 @@ public class BigInt {
 	
 	public void blockWriter(String paras, ArrayList<String> data){
 		try {
-			System.out.println("paras are:"+paras);
+//			System.out.println("paras are:"+paras);
 			FileWriter fstream = new FileWriter(this.path+"/"+crtBlockData.blockNum);
 			BufferedWriter br = new BufferedWriter(fstream);
 			br.write(paras);
