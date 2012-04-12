@@ -17,17 +17,17 @@ public class BlockData {
 	
 	public int[] arrayData;
 	public int sign;
-	public String path;
+	public String biPath;
 	public BufferedReader br; 
 	
 	public BlockData(String path, int blockNum) {
 
 		//set block number
 		this.blockNum = blockNum;
-		this.path = path;
+		this.biPath = path;
 		//read the file
 		try {
-			br = new BufferedReader(new FileReader(this.path+"/"+this.blockNum));
+			br = new BufferedReader(new FileReader(this.biPath+"/"+this.blockNum));
 			String tmp = br.readLine();
 			ParaParser ps = new ParaParser();
 			ps.parse(tmp);
@@ -65,7 +65,7 @@ public class BlockData {
 				try{
 					this.arrayData[i] = Character.getNumericValue(ctmp[i]);
 				} catch (java.lang.ArrayIndexOutOfBoundsException e){
-					System.out.println("SB! i:"+i+"the array length is:"+arrayData.length+" path is:"+this.path+"/"+this.blockNum);
+					System.out.println("SB! i:"+i+"the array length is:"+arrayData.length+" path is:"+this.biPath+"/"+this.blockNum);
 				}
 			}
 		} catch (IOException e) {
@@ -77,7 +77,7 @@ public class BlockData {
 	public void singleBlockWriter(String paras, ArrayList<String> data, int blockNum){
 		try {
 //			System.out.println("paras are:"+paras);
-			FileWriter fstream = new FileWriter(this.path+"/"+blockNum);
+			FileWriter fstream = new FileWriter(this.biPath+"/"+blockNum);
 			BufferedWriter br = new BufferedWriter(fstream);
 			br.write(paras);
 			br.newLine();

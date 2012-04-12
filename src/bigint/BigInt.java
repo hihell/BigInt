@@ -46,7 +46,6 @@ public class BigInt {
 			crtBlockData.blockNum = 1;//set 1st file number, create and fill it afterward
 			this.path = path;
 		}
-
 	}
 
 	
@@ -85,7 +84,6 @@ public class BigInt {
 			ParaParser ps = new ParaParser();
 			ps.parse(stmp);
 			int to = ps.to;
-//			System.out.println("from:"+ps.from+" to:"+ps.to);
 			return to;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -95,7 +93,7 @@ public class BigInt {
 		return -1;
 	}
 	
-	
+	//TODO rename, blockWriter -> sequenceBlockWriter
 	public void blockWriter(String paras, ArrayList<String> data){
 		try {
 //			System.out.println("paras are:"+paras);
@@ -114,4 +112,33 @@ public class BigInt {
 			e.printStackTrace();	
 		}
 	}
+	
+	public void reverseBlockWriter(String paras, ArrayList<String> data){
+		if(crtBlockData.blockNum < 1){
+			System.out.print("reverse block writer foobar! block number is:"+crtBlockData.blockNum);
+		}
+		try {
+			FileWriter fstream = new FileWriter(this.path+"/"+crtBlockData.blockNum);
+			BufferedWriter br = new BufferedWriter(fstream);
+			br.write(paras);
+			br.newLine();
+			StringBuilder sb = new StringBuilder();
+			for(int i=data.size() - 1; i>=0; i--){
+				sb.append(data.get(i));
+			}
+			br.write(sb.toString());
+			br.close();
+			crtBlockData.blockNum--;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private void fillZero(ArrayList<String> list, int listSize){
+		for(int i = 0; i < listSize; i++){
+			list.add("0");
+		}
+	}
+	
 }

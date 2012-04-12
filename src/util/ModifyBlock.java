@@ -26,7 +26,7 @@ public class ModifyBlock {
 		}
 	}
 	
-	public void deleteZerosInBlock(String bigIntPath, int blockNum, int zeroGap, int blockSize){
+	private void deleteZerosInBlock(String bigIntPath, int blockNum, int zeroGap, int blockSize){
 		int keep = blockSize - zeroGap;
 		BlockData modBlock = new BlockData(bigIntPath, blockNum); 
 		int [] preArray = modBlock.arrayData;
@@ -45,7 +45,7 @@ public class ModifyBlock {
 			arrayData.add(bit.toString());
 		}
 		
-		deleteBlock(modBlock.path+"/"+modBlock.blockNum);
+		deleteBlock(modBlock.biPath+"/"+modBlock.blockNum);
 		
 		modBlock.singleBlockWriter(postPara, arrayData, modBlock.blockNum);
 	}
@@ -73,6 +73,13 @@ public class ModifyBlock {
 			int gap = zeroStart - zeroEnd;
 			int crtBlockNum = modBI.getBlockNum(zeroStart);
 			int crtBlockSize;
+			
+			if(crtBlockNum == 1){//last block
+				System.out.println("the whole number is zero");
+			}
+			
+			
+			
 			if(zeroStart == modBI.totalSize - 1){//first block
 				crtBlockSize = firstBlockSize;
 			} else {
@@ -86,7 +93,6 @@ public class ModifyBlock {
 				deleteBlock(modBI.path+"/"+crtBlockNum);
 				break;
 			} else {
-				//TODO delete data
 				deleteZerosInBlock(modBI.path, crtBlockNum, gap, crtBlockSize);
 				break;
 			}
